@@ -1,0 +1,87 @@
+/**Class: CIT-130-BIN1
+Name: Meghan Moore
+Date: 11/15/2014
+Programming Assignment 12
+Purpose: Implement a Sierpinski gasket.*/
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.Random;
+
+public class Assignment12 extends JFrame{
+  // create a triangle
+  public static final int VERTEX_1X = 50;
+  public static final int VERTEX_1Y = 450;
+  public static final int VERTEX_2X = 450;
+  public static final int VERTEX_2Y = 450;
+  public static final int VERTEX_3X = 250;
+  public static final int VERTEX_3Y = 50;
+  
+  private JPanel panel;
+  
+  public static void main(String[] args) {
+    Assignment12 gui = new Assignment12();
+    gui.setVisible(true);
+  } //end main
+  
+  public Assignment12(){
+    super("Sierpinski Gasket Demonstration");
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setVisible(true);
+    setSize(500,500);
+    setLayout(new BorderLayout());
+    panel = new JPanel();
+    add(panel, "Center");
+    addWindowListener(new DrawOnOpen());
+  } //end constructor
+
+private class DrawOnOpen extends WindowAdapter{
+  public void windowOpened(WindowEvent e){
+    drawFractal draw = new drawFractal();
+    //draw.setVisible(true);
+  } //end windowOpened
+} //end class DrawOnOpen
+
+private class drawFractal{
+  int midpointX = 0;
+  int midpointY = 0;
+      
+  public void drawFractal(){
+    Random randomGenerator = new Random();
+    int targetX = 0;
+    int targetY = 0;
+    //select one of the vertices as current (vertex1)
+    int currentX = 50;
+    int currentY = 450;
+    
+    Graphics g = panel.getGraphics();
+    
+    //loop 50,000 times
+    for(int i = 0; i == 50000; i++){
+      //randomly choose a vertex as the target
+      int r = randomGenerator.nextInt(3)+1; //generates 1, 2, or 3
+      switch (r){
+        case 1:
+          targetX = VERTEX_1X;
+          targetY = VERTEX_1Y;
+        case 2:
+          targetX = VERTEX_2X;
+          targetY = VERTEX_2Y;
+        case 3:
+          targetX = VERTEX_3X;
+          targetY = VERTEX_3Y;
+      } //end switch
+      
+      //Draw a pixel at the mid-point between the target and current.
+      midpointX = (currentX + targetX) / 2;
+      midpointY = (currentY + targetY) / 2;
+      g.drawLine(midpointX, midpointY, midpointX, midpointY);
+      
+      //make current the mid-point
+      currentX = midpointX;
+      currentY = midpointY;
+    } //end for loop
+  } //end drawFractal
+} //end class drawFractal
+} //end class Assignment12
